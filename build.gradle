@@ -10,7 +10,9 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.jbehave', name: 'jbehave-core', version: '4.0-beta-11'
+    testCompile 'org.jbehave.site:jbehave-site-resources:3.1.1:@zip'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.45.0'
+    testCompile group: 'com.github.detro.ghostdriver', name: 'phantomjsdriver', version: '1.1.0'
 }
 
 sourceSets.test.resources.srcDir 'src/test/java'
@@ -18,25 +20,22 @@ sourceSets.test.resources.srcDir 'src/test/java'
 test {
     systemProperties = System.getProperties()
 
-    println(System.getProperty("env"))
-    println(System.getProperty("browser"))
-
     doFirst {
         copy {
             from(zipTree(jarPath("jbehave-core"))) {
                 include "style/*"
             }
-            into("build/jbehave/view")
+            into("target/build/jbehave/view")
 
         }
-       // copy {
-         //   from(zipTree(jarPath("jbehave-site-resources"))) {
-           //     include "js/**/*"
-             //   include "style/**/*"
-               // include "images/*"
-           // }
-            //into("build/jbehave/view")
-       // }
+       copy {
+            from(zipTree(jarPath("jbehave-site-resources"))) {
+                include "js/**/*"
+                include "style/**/*"
+               include "images/*"
+           }
+            into("target/build/jbehave/view")
+       }
     }
 }
 
